@@ -1,20 +1,43 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import useListaReceitas from '../hooks/useListaReceitas'
 import useReceita from "../hooks/useReceita"
+import { useEffect } from 'react'
 
 const EditarReceita = () => {
     const {id} = useParams()
 
     const navigate = useNavigate()
     
-    const {listaReceitas, editarReceita} = useListaReceitas()
+    const {listaReceitas, loading, editarReceita} = useListaReceitas()
+
+    
 
     const receitaEditar = listaReceitas.find(receita => receita.id == id)
+
 
     const {nome, setNome,
         ingredientes, setIngredientes,
         preparacao, setPreparacao
-    } = useReceita(receitaEditar)
+    } = useReceita(receitaEditar || {})
+
+
+    // para preencher os campos assim que carregar a receita, para aparecerem escritos nos inputs
+    useEffect(() => {
+        if(receitaEditar) {
+            setNome(receitaEditar.nome)
+            setIngredientes(receitaEditar.ingredientes)
+            setPreparacao(receitaEditar.preparacao)
+        }
+    }, [receitaEditar])
+
+    if(loading){
+        return <p>A carregar...</p>
+    }
+
+    if (!receitaEditar) {
+        return <p>Receita não existente!!</p>
+    }
+
 
     const editarClick = (e) => {
         e.preventDefault()

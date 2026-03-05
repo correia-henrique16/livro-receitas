@@ -4,13 +4,22 @@ import useListaReceitas from "../hooks/useListaReceitas"
 const DetalhesReceita = () => {
     const {id} = useParams()
     const navigate = useNavigate()
-    const {listaReceitas} = useListaReceitas()
+    const {listaReceitas, loading} = useListaReceitas()
 
+    if(loading){
+        return <p>A carregar...</p>
+    }
 
     const receitaMostrar = listaReceitas.find(receita => receita.id == id)
 
+    if (!receitaMostrar) {
+        return <p>Receita não existente!!</p>
+    }
+    
     const {nome, ingredientes, preparacao} = receitaMostrar
     const nomeMaiusculo = nome.toUpperCase()
+
+    
     return(
         <div>
             <button onClick={() => navigate(-1)}>Voltar</button>

@@ -2,10 +2,15 @@ import { Link } from "react-router-dom"
 import useReceitas from '../hooks/useListaReceitas'
 
 const Home = () => {
-    const {listaReceitas, confirmarApagar} = useReceitas()
+    const {listaReceitas, loading, confirmarApagar} = useReceitas()
+
+    if (loading){
+        return <p>A carregar receitas...</p>
+    }
 
     const listarReceita = (receita) => {
         const {id, nome,} = receita
+
         return(
             <li key={id}>
                 Nome: {nome}

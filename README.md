@@ -1,0 +1,1 @@
+"Livro" de receitas com o objetivo de anotar receitas novas e utilizar a app com a minha namorada de forma a facilitar o momento de escolher o que cozinhar para o jantar.
