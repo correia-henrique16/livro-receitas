@@ -1,34 +1,48 @@
 import useListaReceitas from '../hooks/useListaReceitas'
 import useReceita from "../hooks/useReceita"
-import { Navigate, useNavigate } from 'react-router-dom'
-import { Link } from "react-router-dom"
+import {useNavigate } from 'react-router-dom'
+import tipoLista from '../data/tipo'
+import categoriasLista from '../data/categorias'
+import useFiltros from '../hooks/useFiltros'
+
 
 const AdicionarReceita = () => {
 
     const {nome, setNome,
         ingredientes, setIngredientes,
-        preparacao, setPreparacao
+        preparacao, setPreparacao,
+        tipo, setTipo
     } = useReceita()
 
     const {adicionarReceita} = useListaReceitas()
+
+    const {categoriaSelecionadas, checkBoxClick} = useFiltros()
 
     const navigate = useNavigate()
 
     const registarClick = (e) => {
         e.preventDefault()
 
-        adicionarReceita(nome, ingredientes, preparacao)
+        if (categoriaSelecionadas.length == 0) {
+            alert("Precisa selecionar pelo menos uma categoria!")
+            return
+        }
+
+        adicionarReceita(nome, ingredientes, preparacao, tipo, categoriaSelecionadas)
+
+        alert('Receita Adicionada!')
 
         setNome('')
         setIngredientes('')
         setPreparacao('')
 
-        alert('Receita Adicionada!')
+        navigate('/')
     }
 
     return (
         <div>
             <button onClick={()=> navigate(-1)}>Voltar</button>
+            <h2>Adicionar Receita</h2>
 
             <form onSubmit={registarClick}>
                 <div>
@@ -50,6 +64,30 @@ const AdicionarReceita = () => {
                     <textarea id="input-preparacao" required
                      value={preparacao} placeholder="Mexer bem..."
                       onChange={event => setPreparacao(event.target.value)}></textarea>
+                </div>
+
+                <div>
+                    <label htmlFor="tipo-select">Tipo: </label>
+                    <select id="tipo-select" value={tipo} onChange={event => setTipo(Number(event.target.value))}>
+                        {tipoLista.map((t) => {
+                            return (
+                                <option key={t.id} value={t.id}>
+                                    {t.nome}
+                                </option>)
+                        })}
+                    </select>
+                </div>
+
+                <div>
+                    <label>Categoria: </label>
+                    {categoriasLista.map((c) => {
+                        return(
+                            <label key={c.id} htmlFor={c.id}>
+                                <input type='checkbox' checked={categoriaSelecionadas.includes(c.id)} onChange={() => checkBoxClick(c.id)} id={c.id} />
+                                {c.nome}
+                            </label>
+                        )
+                    })}
                 </div>
 
 

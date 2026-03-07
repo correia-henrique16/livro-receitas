@@ -1,5 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import useListaReceitas from "../hooks/useListaReceitas"
+import tipoLista from "../data/tipo"
+import categoriasLista from "../data/categorias"
 
 const DetalhesReceita = () => {
     const {id} = useParams()
@@ -16,10 +18,16 @@ const DetalhesReceita = () => {
         return <p>Receita não existente!!</p>
     }
     
-    const {nome, ingredientes, preparacao} = receitaMostrar
+    const {nome, ingredientes, preparacao, tipo, categorias} = receitaMostrar
     const nomeMaiusculo = nome.toUpperCase()
 
-    
+    const tipoMostrar = tipoLista.find(t => t.id == tipo)
+
+    const categoriasMostrar = categorias.map(cId => {
+        return categoriasLista.find(cat => cat.id == cId)
+    })
+
+
     return(
         <div>
             <button onClick={() => navigate(-1)}>Voltar</button>
@@ -35,6 +43,26 @@ const DetalhesReceita = () => {
                 <div>
                     <h3>Preparação</h3>
                     <p>{preparacao}</p>
+                </div>
+
+                <div>
+                    <h3>Tipo</h3>
+                    <p>{tipoMostrar.nome}</p>
+                </div>
+
+                <div>
+                    <h3>Categorias</h3>
+                    <ul>
+                        {
+                            categoriasMostrar.map(cat => {
+                                return (
+                                    <li key={cat.id} >
+                                        {cat.nome}
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
                 </div>
                 
             </section>

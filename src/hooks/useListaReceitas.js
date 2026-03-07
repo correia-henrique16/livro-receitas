@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect} from "react"
 import { db } from "../firebase"
 import { addDoc, collection, deleteDoc, onSnapshot, updateDoc, doc } from "firebase/firestore"
 
@@ -6,6 +6,10 @@ const useListaReceitas = () => {
     // meter os usestates da lista
     // tipo useEffect, e as funçoes CRUD
     const [listaReceitas, setListaReceitas] = useState([])
+
+    const[pesquisa, setPesquisa] = useState('')
+    const [tipoFiltro, setTipoFiltro] = useState(0)
+    const [categoriaFiltro, setCategoriaFiltro] = useState(0)
 
     const [loading, setLoading] = useState(true)
 
@@ -17,9 +21,6 @@ const useListaReceitas = () => {
             const receitasCloud = querySnapshot.docs.map(receita => ({
                 id: receita.id,
                 ...receita.data()
-                // nome: receita.nome,
-                // ingredientes: receita.ingredientes,
-                // preparacao: receita.preparacao
             }))
 
             setListaReceitas(receitasCloud)
@@ -30,25 +31,25 @@ const useListaReceitas = () => {
         })
 
         return () => comunicarBd()
-        // localStorage.setItem('listaReceitas', JSON.stringify(listaReceitas))
     }, [])
 
 
-    const adicionarReceita = async (nome, ingredientes, preparacao) => {
+    const adicionarReceita = async (nome, ingredientes, preparacao, tipo, listaCategorias) => {
+
+        console.log(listaCategorias)
         try{
             const novaReceita = {
-            // id: self.crypto.randomUUID(),
-            nome: nome,
-            ingredientes: ingredientes,
-            preparacao: preparacao,
+                nome: nome,
+                ingredientes: ingredientes,
+                preparacao: preparacao,
+                tipo: tipo,
+                categorias: listaCategorias
             }
 
             await addDoc(colecao, novaReceita)
         }catch(erro){
             console.error("Erro: ", erro)
         }
-        
-        // setListaReceitas([...listaReceitas, novaReceita])
     }
 
     const apagarReceita = async (id) => {
@@ -59,10 +60,6 @@ const useListaReceitas = () => {
         } catch (erro) {
             console.error("Erro: ", erro)
         }
-        
-
-        // const listaAtualizada = listaReceitas.filter((receita) => receita.id !== id)
-        // setListaReceitas(listaAtualizada)
     }
 
     const confirmarApagar = (id) => {
@@ -79,18 +76,34 @@ const useListaReceitas = () => {
         } catch (erro) {
             console.log("Erro: ", erro)
         }
-        // const listaAtualizada = listaReceitas.map(receita => receita.id = id
-        //     ? {...receita, ...dadosReceita} : receita
-        // )
-        // setListaReceitas(listaAtualizada)
     }
+
+
+
+    const listaFiltrada = listaReceitas.filter((receita) => {
+        const nome = receita.nome
+        const pesquisaTrim = pesquisa.trim()
+        const condicaoNome = pesquisaTrim == "" || nome.toLowerCase().includes(pesquisaTrim.toLowerCase()) // retorna True numa das duas ocasiões
+        const condicaoTipo = tipoFiltro == 0 || receita.tipo == tipoFiltro // retorna True se o filtro for igual, ou se for 0 (sem filtro)
+        const condicaoCategoria = categoriaFiltro == 0 || receita.categorias.includes(categoriaFiltro)
+
+        return condicaoNome && condicaoTipo && condicaoCategoria
+    })
+
+    
 
     return{
         listaReceitas,
+        setPesquisa,
+        tipoFiltro, 
+        setTipoFiltro,
+        categoriaFiltro,
+        setCategoriaFiltro,
+        listaFiltrada,
         adicionarReceita,
         confirmarApagar,
         editarReceita,
-        loading
+        loading,
     }
         
 }
