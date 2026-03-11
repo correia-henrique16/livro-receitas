@@ -1,9 +1,11 @@
 import useListaReceitas from '../hooks/useListaReceitas'
 import useReceita from "../hooks/useReceita"
 import {useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import tipoLista from '../data/tipo'
 import categoriasLista from '../data/categorias'
 import useFiltros from '../hooks/useFiltros'
+import EscolherImagem from '../components/EscolherImagem'
 
 
 const AdicionarReceita = () => {
@@ -11,7 +13,8 @@ const AdicionarReceita = () => {
     const {nome, setNome,
         ingredientes, setIngredientes,
         preparacao, setPreparacao,
-        tipo, setTipo
+        tipo, setTipo,
+        fotoBase64, setFotoBase64,
     } = useReceita()
 
     const {adicionarReceita} = useListaReceitas()
@@ -28,7 +31,7 @@ const AdicionarReceita = () => {
             return
         }
 
-        adicionarReceita(nome, ingredientes, preparacao, tipo, categoriaSelecionadas)
+        adicionarReceita(nome, ingredientes, preparacao, tipo, categoriaSelecionadas, fotoBase64)
 
         alert('Receita Adicionada!')
 
@@ -38,6 +41,7 @@ const AdicionarReceita = () => {
 
         navigate('/')
     }
+
 
     return (
         <div>
@@ -90,6 +94,7 @@ const AdicionarReceita = () => {
                     })}
                 </div>
 
+                <EscolherImagem onImagem={stringImagem => setFotoBase64(stringImagem)}/>
 
                 <button type="submit">Adicionar</button>
             </form>

@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import useListaReceitas from "../hooks/useListaReceitas"
 import tipoLista from "../data/tipo"
 import categoriasLista from "../data/categorias"
+import { Link } from "react-router-dom"
 
 const DetalhesReceita = () => {
     const {id} = useParams()
@@ -18,7 +19,7 @@ const DetalhesReceita = () => {
         return <p>Receita não existente!!</p>
     }
     
-    const {nome, ingredientes, preparacao, tipo, categorias} = receitaMostrar
+    const {nome, ingredientes, preparacao, tipo, categorias, imagem} = receitaMostrar
     const nomeMaiusculo = nome.toUpperCase()
 
     const tipoMostrar = tipoLista.find(t => t.id == tipo)
@@ -31,9 +32,12 @@ const DetalhesReceita = () => {
     return(
         <div>
             <button onClick={() => navigate(-1)}>Voltar</button>
+            <Link to={`/editar/${id}`}>Editar</Link>
 
             <section>
                 <h2>{nomeMaiusculo}</h2>
+
+                <img src={imagem} alt="Imagem da receita" />
 
                 <div>
                     <h3>Ingredientes</h3>

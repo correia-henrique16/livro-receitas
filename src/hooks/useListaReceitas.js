@@ -34,7 +34,7 @@ const useListaReceitas = () => {
     }, [])
 
 
-    const adicionarReceita = async (nome, ingredientes, preparacao, tipo, listaCategorias) => {
+    const adicionarReceita = async (nome, ingredientes, preparacao, tipo, listaCategorias, imagem) => {
 
         console.log(listaCategorias)
         try{
@@ -43,7 +43,8 @@ const useListaReceitas = () => {
                 ingredientes: ingredientes,
                 preparacao: preparacao,
                 tipo: tipo,
-                categorias: listaCategorias
+                categorias: listaCategorias,
+                imagem: imagem,
             }
 
             await addDoc(colecao, novaReceita)
