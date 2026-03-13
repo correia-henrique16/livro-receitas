@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import './styles/index.css'
+import Home from './pages/Home.jsx'
 import App from './App.jsx'
 import AdicionarReceita from './pages/AdicionarReceita.jsx'
 import DetalhesReceita from './pages/DetalhesReceita.jsx'
@@ -11,6 +12,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+
+  {
+    path: "/home",
+    element: <Home />
   },
 
   {
@@ -31,7 +37,6 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <h1>Livro de Receitas</h1>
     <RouterProvider router={router} />
   </StrictMode>,
 )
