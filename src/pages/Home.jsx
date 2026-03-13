@@ -17,7 +17,6 @@ const Home = () => {
             <li key={id}>
                 Nome: {nome}
                 <Link to={`/receita/${id}`}>Detalhes</Link>
-                <Link to={`/editar/${id}`}>Editar</Link>
                 <button onClick={() => confirmarApagar(id)}>Apagar Receita</button>
             </li>
         )

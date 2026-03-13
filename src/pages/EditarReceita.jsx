@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import tipoLista from '../data/tipo'
 import useFiltros from '../hooks/useFiltros'
 import categoriasLista from '../data/categorias'
+import EscolherImagem from '../components/EscolherImagem'
 
 const EditarReceita = () => {
     const {id} = useParams()
@@ -21,6 +22,7 @@ const EditarReceita = () => {
         ingredientes, setIngredientes,
         preparacao, setPreparacao,
         tipo, setTipo,
+        fotoBase64, setFotoBase64
     } = useReceita(receitaEditar || {})
 
     const {categoriaSelecionadas, setCategoriasSelecionadas, checkBoxClick} = useFiltros()
@@ -34,6 +36,7 @@ const EditarReceita = () => {
             setPreparacao(receitaEditar.preparacao)
             setTipo(receitaEditar.tipo)
             setCategoriasSelecionadas(receitaEditar.categorias)
+            setFotoBase64(receitaEditar.imagem)
         }
     }, [receitaEditar])
 
@@ -54,6 +57,7 @@ const EditarReceita = () => {
             ingredientes,
             preparacao,
             tipo,
+            imagem: fotoBase64,
             categorias: categoriaSelecionadas})
 
         alert('Receita Editada!')
@@ -110,6 +114,9 @@ const EditarReceita = () => {
                         )
                     })}
                 </div>
+
+                <EscolherImagem key={receitaEditar.id} onImagem={stringImagem => setFotoBase64(stringImagem)}
+                    imagemInicial={fotoBase64}/>
 
 
                 <button type="submit">Editar</button>

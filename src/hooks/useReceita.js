@@ -6,12 +6,14 @@ const useReceita = (receitaEditar = {}) => {
     const [ingredientes, setIngredientes] = useState(receitaEditar.ingredientes || '')
     const [preparacao, setPreparacao] = useState(receitaEditar.preparacao || '')
     const [tipo, setTipo] = useState(receitaEditar.tipo || 1)
+    const [fotoBase64, setFotoBase64] = useState('')
 
     return {
         nome, setNome,
         ingredientes, setIngredientes,
         preparacao, setPreparacao,
-        tipo, setTipo
+        tipo, setTipo,
+        fotoBase64, setFotoBase64,
     }
 }
 
