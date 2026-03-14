@@ -25,12 +25,16 @@ const Slide = ({listaFiltrada, loading}) => {
         return <p>A carregar receitas...</p>
     }
 
+    if (listaFiltrada.length === 0) {
+        return <p>Nenhuma receita encontrada para os filtros selecionados.</p>
+    }
+
     const listarReceita = (receita) => {
         const {id, nome, imagem} = receita
 
         return(
             <section key={id} className="section-receitas">
-                
+
                 {imagem !== '' ? (
                     <img src={imagem} alt="Imagem da receita" className="imagem"/>
                 ) : (
