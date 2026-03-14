@@ -24,7 +24,7 @@ const Home = () => {
 
                     <section className="section-filtros">
                         <button onClick={() => mostrarFiltros()} className="btn-filtrar">Filtrar</button>
-                        
+
                         {estadoFiltros == true && (
                             <Filtros
                                 setPesquisa={setPesquisa}
@@ -38,19 +38,20 @@ const Home = () => {
                     </section>
                     
                     
-                    {listaReceitas.length == 0 && <p>Livro sem receitas!</p>}
+                    {listaReceitas.length == 0 && <p></p>}
 
 
                     
                     {(listaFiltrada.length == 0 && listaReceitas.length !== 0) ? (
                         <p>Não existe receitas com esses filtros</p>
                     ) : (
-                        <Slide 
-                            listaFiltrada={listaFiltrada}
-                            loading={loading}
-                        />
+                    <Slide 
+                        listaFiltrada={listaFiltrada}
+                        loading={loading}
+                        listaReceitas = {listaReceitas}
+                    />
                     )}
-            </div>
+                </div>
             </div>
         </div>
     )

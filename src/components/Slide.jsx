@@ -1,13 +1,17 @@
 import useListaReceitas from "../hooks/useListaReceitas"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import setaDireita from "../imgs/black-arrow.png"
 import setaEsquerda from "../imgs/black-arrow-left.png"
 import noImage from "../imgs/no-image.png"
 
-const Slide = ({listaFiltrada, loading}) => {
+const Slide = ({listaFiltrada, loading, listaReceitas}) => {
 
     const [marcador, setMarcador] = useState(0)
+
+    useEffect(() => {
+        setMarcador(0);
+    }, [listaFiltrada.length]);
 
     const maximoIndice = listaFiltrada.length - 1
     const minimoIndice = 0
@@ -25,9 +29,19 @@ const Slide = ({listaFiltrada, loading}) => {
         return <p>A carregar receitas...</p>
     }
 
-    if (listaFiltrada.length === 0) {
-        return <p>Nenhuma receita encontrada para os filtros selecionados.</p>
+    if (listaFiltrada.length == 0) {
+        return <p>Livro sem receitas!</p>
     }
+
+    if (listaFiltrada.length == 0 && listaReceitas.length !== 0){
+        return <p>Não existe receitas com esses filtros</p>
+    }
+
+    const receitaAtual = listaFiltrada[marcador]
+
+    if (!receitaAtual) return null
+
+    
 
     const listarReceita = (receita) => {
         const {id, nome, imagem} = receita
@@ -68,7 +82,7 @@ const Slide = ({listaFiltrada, loading}) => {
 
 
 
-    return listarReceita(listaFiltrada[marcador])
+    return listarReceita(receitaAtual)
 }
 
 export default Slide
