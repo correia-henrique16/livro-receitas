@@ -3,11 +3,12 @@ import useListaReceitas from "../hooks/useListaReceitas"
 import tipoLista from "../data/tipo"
 import categoriasLista from "../data/categorias"
 import { Link } from "react-router-dom"
+import noImage from "../imgs/no-image.png"
 
 const DetalhesReceita = () => {
     const {id} = useParams()
     const navigate = useNavigate()
-    const {listaReceitas, loading} = useListaReceitas()
+    const {listaReceitas, loading, confirmarApagar} = useListaReceitas()
 
     if(loading){
         return <p>A carregar...</p>
@@ -37,7 +38,12 @@ const DetalhesReceita = () => {
             <section>
                 <h2>{nomeMaiusculo}</h2>
 
-                <img src={imagem} alt="Imagem da receita" />
+                {imagem !== '' ? (
+                    <img src={imagem} alt="Imagem da receita" className="imagem"/>
+                ) : (
+                    <img src={noImage} alt="Sem imagem" className="imagem"/>
+                )}
+                
 
                 <div>
                     <h3>Ingredientes</h3>
@@ -69,6 +75,8 @@ const DetalhesReceita = () => {
                     </ul>
                 </div>
                 
+                <button onClick={() => confirmarApagar(id)}>Apagar Receita</button>
+
             </section>
         </div>
     )

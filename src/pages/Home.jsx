@@ -1,72 +1,57 @@
 import { Link } from "react-router-dom"
 import useListaReceitas from '../hooks/useListaReceitas'
-import tipoLista from "../data/tipo"
-import categoriasLista from "../data/categorias"
+import Slide from "../components/Slide"
+import Filtros from "../components/Filtros"
+import { useState } from "react"
 
 const Home = () => {
-    const {listaReceitas, listaFiltrada, loading, confirmarApagar, setPesquisa, tipoFiltro, setTipoFiltro, categoriaFiltro, setCategoriaFiltro} = useListaReceitas()
+    const {listaReceitas, listaFiltrada, setPesquisa, tipoFiltro, setTipoFiltro, categoriaFiltro, setCategoriaFiltro, loading} = useListaReceitas()
+    const [estadoFiltros, setEstadoFiltros] = useState(false)
 
-    if (loading){
-        return <p>A carregar receitas...</p>
-    }
-
-    const listarReceita = (receita) => {
-        const {id, nome,} = receita
-
-        return(
-            <li key={id}>
-                Nome: {nome}
-                <Link to={`/receita/${id}`}>Detalhes</Link>
-                <button onClick={() => confirmarApagar(id)}>Apagar Receita</button>
-            </li>
-        )
+    const mostrarFiltros = () => {
+        if (estadoFiltros == false){
+            setEstadoFiltros(true)
+        } else {setEstadoFiltros(false)}
     }
 
 
     return (
-        <div>
-            <Link to={`/adicionar`}>Adicionar Nova Receita</Link>
+        <div className = "container-capa">
+            <div className="capa-livro-aberto">
+                <div className="folha-livro">
 
-            <div>
-                <label htmlFor="pesquisar-input">Pesquisar por nome: </label>
-                <input type="text" id="pesquisar-input" onChange={(e) => setPesquisa(e.target.value)}/>
+                    <Link to={`/adicionar`} className="link" id="link-adicionar">Adicionar Nova Receita</Link>
 
-                <label htmlFor="tipo-select">Filtrar por tipo: </label>
-                <select id="tipo-select" value={tipoFiltro} onChange={event => setTipoFiltro(Number(event.target.value))}>
-                    <option key="0" value="0">Nenhum filtro</option>
-                    {tipoLista.map((t) => {
-                            return (<option key={t.id} value={t.id}>
-                                        {t.nome}
-                                    </option>)
-                        })}
-                </select>
+                    <section className="section-filtros">
+                        <button onClick={() => mostrarFiltros()} className="btn-filtrar">Filtrar</button>
+                        
+                        {estadoFiltros == true && (
+                            <Filtros
+                                setPesquisa={setPesquisa}
+                                setTipoFiltro={setTipoFiltro}
+                                setCategoriaFiltro={setCategoriaFiltro}
+                                tipoFiltro={tipoFiltro}
+                                categoriaFiltro={categoriaFiltro}
+                            />
+                        )}
+                        
+                    </section>
+                    
+                    
+                    {listaReceitas.length == 0 && <p>Livro sem receitas!</p>}
 
-                <label htmlFor="categoria-select">Filtrar por categoria:</label>
-                <select id="categoria-select" value={categoriaFiltro} onChange={event => setCategoriaFiltro(Number(event.target.value))}>
-                    <option key="0" value="0">Nenhum filtro</option>
-                    {categoriasLista.map(c => {
-                        return (
-                        <option key={c.id} value={c.id}>
-                            {c.nome}
-                        </option>)
-                    })}
-                </select>
+
+                    
+                    {(listaFiltrada.length == 0 && listaReceitas.length !== 0) ? (
+                        <p>Não existe receitas com esses filtros</p>
+                    ) : (
+                        <Slide 
+                            listaFiltrada={listaFiltrada}
+                            loading={loading}
+                        />
+                    )}
             </div>
-            
-
-            {listaReceitas.length == 0 && <p>Livro sem receitas!</p>}
-
-
-            
-            {(listaFiltrada.length == 0 && listaReceitas.length !== 0) ? (
-                <p>Não existe receitas com esses filtros</p>
-            ) : (
-                <ul>
-                    {listaFiltrada.map((receita) => {
-                        return listarReceita(receita)
-                    })}
-                </ul>
-            )}
+            </div>
         </div>
     )
 }

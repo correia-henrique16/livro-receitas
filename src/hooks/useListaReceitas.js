@@ -1,6 +1,7 @@
 import { useState, useEffect} from "react"
 import { db } from "../firebase"
 import { addDoc, collection, deleteDoc, onSnapshot, updateDoc, doc } from "firebase/firestore"
+import { useNavigate } from "react-router-dom"
 
 const useListaReceitas = () => {
     // meter os usestates da lista
@@ -14,6 +15,8 @@ const useListaReceitas = () => {
     const [loading, setLoading] = useState(true)
 
     const colecao = collection(db, "receitas")
+
+    const navigate = useNavigate()
 
     useEffect(() => {
 
@@ -58,6 +61,8 @@ const useListaReceitas = () => {
             const receitaCloud = doc(db, "receitas", id)
             
             await deleteDoc(receitaCloud)
+
+            navigate('/home')
         } catch (erro) {
             console.error("Erro: ", erro)
         }

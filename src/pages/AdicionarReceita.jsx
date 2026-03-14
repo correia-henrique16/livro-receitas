@@ -39,7 +39,7 @@ const AdicionarReceita = () => {
         setIngredientes('')
         setPreparacao('')
 
-        navigate('/')
+        navigate('/home')
     }
 
 

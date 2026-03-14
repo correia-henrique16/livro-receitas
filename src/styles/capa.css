@@ -1,14 +1,16 @@
 .capa-livro {
     position: relative;
-    width: 50vw;
-    height: 90vh;
+    width: 90vw;
+    height: 85vh;
     background-color: lightpink;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     border-radius: 0 30px 30px 0 ;
-    border-left: brown solid 4px;
+    border-left: brown solid 7px;
+    box-sizing: border-box;
+    padding: 50% 0;
 }
 
 .container-capa {
@@ -26,20 +28,36 @@
     transform: translate(-50%, -50%);
 }
 
-.avancar-link img {
-    width: 3rem;
+.avancar-link img, .seta img {
+    width: 2.5rem;
 }
 
 h1{
-    margin: 2rem;
-    font-size: 4rem;
+    /* margin: 3rem 0; */
+    font-size: 2.1rem;
 }
 
-p{
-    margin: 2rem;
-    font-size: 1.5rem;
+h2{
+    margin: 0 0.5rem;
+    font-size: 1.1rem;
+    text-align: center;
+    font-weight: normal;
 }
 
-.avancar-link :hover {
+.avancar-link :hover, .seta :hover {
     opacity: 0.3;
+}
+
+.capa-livro-aberto{
+    position: relative;
+    width: 90vw;
+    height: 85vh;
+    background-color: lightpink;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 30px 30px 0 ;
+    border-left: brown solid 7px;
+    box-sizing: border-box;
 }
